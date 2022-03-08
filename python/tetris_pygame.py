@@ -1,6 +1,6 @@
 import pygame
 
-from tetris import Grid, Piece, PieceFactory, Block
+from tetris import Grid, Piece, PieceFactory
 """All GUI related code (pygame) is in this module"""
 
 grid = Grid(10, 20)
@@ -21,6 +21,9 @@ play_height = grid.height * 30
 
 top_left_x = (window_width - play_width) // 2
 top_left_y = window_height - play_height
+
+block_color = [(100,100,100),(150,0,0), (0,150,0), (0,0,150), (150,0,0), (50,0,90), (50,110,50), (150,0,140)]
+block_color_shadow = [(100,100,100),(250,0,0), (0,250,0), (0,0,240), (250,0,0), (90,0,200), (50,200,50), (250,0,140) ]
 
 pygame.font.init()
 
@@ -112,14 +115,14 @@ def draw_window(surface, grid : Grid, score, level, lines, total_lines):
         for x in range(len(grid.blocks[y])):
             b = grid.blocks[y][x]
             if( b != None ):
-                draw_block(surface, x, y, top_left_x, top_left_y, block_size, b.color, b.shadow)
+                draw_block(surface, x, y, top_left_x, top_left_y, block_size, block_color[b], block_color_shadow[b])
 
     draw_piece(surface, current, top_left_x, top_left_y, block_size)
         
 
 def draw_piece(surface, piece : Piece, deltax, deltay, block_size):
     for b in piece.coordinates:
-        draw_block(surface, b.x, b.y, deltax, deltay, block_size, piece.block.color, piece.block.shadow)
+        draw_block(surface, b.x, b.y, deltax, deltay, block_size, block_color[piece.index], block_color_shadow[piece.index])
 
 def draw_block(surface, x, y, deltax, deltay, block_size, color, shadow):
     border = round(block_size/11)

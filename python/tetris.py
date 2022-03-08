@@ -1,14 +1,8 @@
 import random
 """The core tetris classes are in this module"""
 
-class Block:
-    """A Block is the smallest unit that makes up a piece."""
-    def __init__(self, color, shadow):
-        self.color = color
-        self.shadow = shadow
-
 class Grid:
-    """"A Grid is a two dimentional array of blocks."""
+    """"A Grid is a two dimentional array of blocks (ints for now)."""
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -17,7 +11,7 @@ class Grid:
     def add_piece(self, piece):
         #Populate the grid with blocks from this piece
         for c in piece.coordinates:
-            self.blocks[c.y][c.x] = piece.block
+            self.blocks[c.y][c.x] = piece.index
 
     def clear_rows(self):
         row_count = 0
@@ -50,11 +44,10 @@ class Coordinate:
 
 class Piece:
     """A Piece is a combination of blocks that can be transformed and rotated """
-    def __init__(self, id, coordinates, block, rotation):
-        self.id = id
+    def __init__(self, index, coordinates, rotation):
+        self.index = index
         self.coordinates = coordinates
         self.new_coordinates = [Coordinate(0,0) for i in range(len(coordinates))] 
-        self.block : Block = block
         self.rotation = rotation
         
     def rotate(self, direction, grid):
@@ -111,10 +104,10 @@ class PieceFactory:
     def swap_hold(self, piece):
         if(self.hold):
             current = self.hold
-            self.hold = self.__piece(piece.id)
+            self.hold = self.__piece(piece.index)
             return current
         else :
-            self.hold = self.__piece(piece.id)
+            self.hold = self.__piece(piece.index)
             return self.get()
 
     def __random_piece(self):
@@ -124,28 +117,28 @@ class PieceFactory:
         if i == 1:
             # ☒☒☒☐
             # ☐☒☐☐
-            return Piece(i, [Coordinate(1,0), Coordinate(0,0), Coordinate(2,0), Coordinate(1,1)], Block((150,0,0), (250,0,0)), 0)
+            return Piece(i, [Coordinate(1,0), Coordinate(0,0), Coordinate(2,0), Coordinate(1,1)], 0)
         if i == 2:
             # ☐☒☒☐
             # ☐☒☒☐
-            return Piece(i, [Coordinate(1,0), Coordinate(1,1), Coordinate(2,0), Coordinate(2,1)], Block((0,150,0), (0,250,0)), -1)
+            return Piece(i, [Coordinate(1,0), Coordinate(1,1), Coordinate(2,0), Coordinate(2,1)], -1)
         if i == 3:
             # ☒☐☐☐
             # ☒☒☒☐
-            return Piece(i, [Coordinate(1,1), Coordinate(0,1), Coordinate(2,1), Coordinate(0,0)], Block((0,0,150), (0,0,240)), 0)
+            return Piece(i, [Coordinate(1,1), Coordinate(0,1), Coordinate(2,1), Coordinate(0,0)], 0)
         if i == 4:
             # ☐☐☐☒
             # ☐☒☒☒
-            return Piece(i, [Coordinate(2,1), Coordinate(1,1), Coordinate(3,1), Coordinate(3,0)], Block((150,0,0), (250,0,0)), 0)
+            return Piece(i, [Coordinate(2,1), Coordinate(1,1), Coordinate(3,1), Coordinate(3,0)], 0)
         if i == 5:
             # ☒☒☐☐
             # ☐☒☒☐
-            return Piece(i, [Coordinate(1,0), Coordinate(0,0),Coordinate(1,1),Coordinate(2,1)], Block((50,0,90), (90,0,200)), 0)
+            return Piece(i, [Coordinate(1,0), Coordinate(0,0),Coordinate(1,1),Coordinate(2,1)], 0)
         if i == 6:
             # ☐☐☒☒
             # ☐☒☒☐
-            return Piece(i, [Coordinate(2,0), Coordinate(3,0), Coordinate(1,1), Coordinate(2,1)], Block((50,110,50), (50,200,50)), 0)
+            return Piece(i, [Coordinate(2,0), Coordinate(3,0), Coordinate(1,1), Coordinate(2,1)], 0)
         else:
             # ☒☒☒☒
             # ☐☐☐☐
-            return Piece(i, [Coordinate(1,0), Coordinate(0,0), Coordinate(2,0), Coordinate(3,0)], Block((150,0,140), (250,0,140)), 0)
+            return Piece(i, [Coordinate(1,0), Coordinate(0,0), Coordinate(2,0), Coordinate(3,0)], 0)
