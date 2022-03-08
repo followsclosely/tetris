@@ -6,7 +6,7 @@ class Grid:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.blocks = [[None for _ in range(10)] for _ in range(20)]
+        self.blocks = [[None for _ in range(width)] for _ in range(height)]
     
     def add_piece(self, piece):
         #Populate the grid with blocks from this piece
