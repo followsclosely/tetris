@@ -14,10 +14,10 @@ window_height = 700
 block_size = 30
 
 # play area is 10 blocks wide
-play_width = grid.width * 30  
+play_width = grid.width * block_size  
 
 # play area is 20 blocks high
-play_height = grid.height * 30 
+play_height = grid.height * block_size 
 
 top_left_x = (window_width - play_width) // 2
 top_left_y = window_height - play_height
@@ -91,13 +91,6 @@ def draw_next_pieces(surface, queue):
         draw_piece(surface, next, top_left_x - next_block_size*5 , top_left_y + block_size + (next_block_size*2*i) + (i*10) + 30, next_block_size)
 
 
-def draw_grid(surface, grid : Grid):
-    sx = top_left_x
-    sy = top_left_y
-
-    pygame.draw.line(surface, (128, 128, 128), (top_left_x + 0*block_size, top_left_y),(top_left_x + 0*block_size, top_left_y + play_height))
-    pygame.draw.line(surface, (128, 128, 128), (top_left_x + 10*block_size, top_left_y),(top_left_x + 10*block_size, top_left_y + play_height))
-
 
 def draw_window(surface, grid : Grid, score, level, lines, total_lines):
     surface.fill((0, 0, 0))
@@ -108,8 +101,10 @@ def draw_window(surface, grid : Grid, score, level, lines, total_lines):
 
     draw_hold(surface, piece_factory.hold)
     draw_next_pieces(surface, piece_factory.queue)
-    draw_grid(surface, grid)
     draw_stats(surface, score, level, lines, total_lines)
+
+    pygame.draw.line(surface, (128, 128, 128), (top_left_x + 0*block_size, top_left_y),(top_left_x + 0*block_size, top_left_y + play_height))
+    pygame.draw.line(surface, (128, 128, 128), (top_left_x + grid.width*block_size, top_left_y),(top_left_x + grid.width*block_size, top_left_y + play_height))
 
     for y in range(len(grid.blocks)):
         for x in range(len(grid.blocks[y])):
