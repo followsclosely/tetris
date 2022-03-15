@@ -1,4 +1,5 @@
 import pygame
+import copy
 
 from tetris import Grid, Piece, PieceFactory
 """All GUI related code (pygame) is in this module"""
@@ -22,8 +23,9 @@ play_height = grid.height * block_size
 top_left_x = (window_width - play_width) // 2
 top_left_y = window_height - play_height
 
-block_color = [(100,100,100),(150,0,0), (0,150,0), (0,0,150), (150,0,0), (50,0,90), (50,110,50), (150,0,140)]
-block_color_shadow = [(100,100,100),(250,0,0), (0,250,0), (0,0,240), (250,0,0), (90,0,200), (50,200,50), (250,0,140) ]
+# The colors of the blocks.
+block_color = [(100,100,100), (150,0,0), (0,150,0), (0,0,150), (150,0,0), (50,0,90), (50,110,50), (150,0,140)]
+block_color_shadow = [(100,100,100), (250,0,0), (0,250,0), (0,0,240), (250,0,0), (90,0,200), (50,200,50), (250,0,140) ]
 
 pygame.font.init()
 
@@ -113,6 +115,12 @@ def draw_window(surface, grid : Grid, score, level, lines, total_lines):
                 draw_block(surface, x, y, top_left_x, top_left_y, block_size, block_color[b], block_color_shadow[b])
 
     draw_piece(surface, current, top_left_x, top_left_y, block_size)
+    
+    current_drop = copy.deepcopy(current)
+    while current_drop.translate(0, 1, grid):
+        pass
+    for b in current_drop.coordinates:
+        pygame.draw.rect(surface, block_color[current_drop.index], (1 + top_left_x + b.x*block_size, 1+ top_left_y + b.y*block_size, block_size, block_size), 1)
         
 
 def draw_piece(surface, piece : Piece, deltax, deltay, block_size):
@@ -148,7 +156,7 @@ def main(win):
     global current, total_lines, score, level, last_level_up
 
     current = piece_factory.get()
-    current.translate(3,3, grid)
+    current.translate(3, 3, grid, False)
 
     game_run = True
     
@@ -170,7 +178,7 @@ def main(win):
                 game_run = False
             if event.type == pygame.KEYDOWN:
                 print(event)
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT: 
                     current.translate(-1,0, grid)
                 if event.key == pygame.K_RIGHT:
                     current.translate(1,0, grid)
@@ -180,7 +188,7 @@ def main(win):
                     current.translate(0,1, grid)
                 if event.key == pygame.K_h:
                     current = piece_factory.swap_hold(current)
-                    current.translate(3,3, grid)
+                    current.translate(3,3, grid, False)
                 if event.key == pygame.K_UP:
                     current.rotate(1, grid)
                 if event.key == pygame.K_DOWN:

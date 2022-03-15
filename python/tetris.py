@@ -13,6 +13,9 @@ class Grid:
         for c in piece.coordinates:
             self.blocks[c.y][c.x] = piece.index
 
+    def is_row_completed(self, y):
+        return not(None in self.blocks[y])
+
     def clear_rows(self):
         row_count = 0
         row_counts = [0 for col in range(self.height)]
@@ -60,26 +63,28 @@ class Piece:
             self.new_coordinates[i].x = self.coordinates[i].y + (centroid.x - centroid.y)
             self.new_coordinates[i].y = centroid.x + (centroid.y - self.coordinates[i].x)
 
-        return self.__verify_and_commit(grid)
+        return self.__verify_and_commit(grid, True)
 
-    def translate(self, dx, dy, grid):
+    def translate(self, dx, dy, grid, validate = True):
         """Performs a simple translation on the Piece. If the grid is not None then it will be checked for room to move the piece."""
 
         for i in range(len(self.coordinates)):
             self.new_coordinates[i].x = self.coordinates[i].x + dx
             self.new_coordinates[i].y = self.coordinates[i].y + dy
 
-        return self.__verify_and_commit(grid)
+        return self.__verify_and_commit(grid, validate)
     
-    def __verify_and_commit(self, grid):
+    def __verify_and_commit(self, grid, validate):
         """Verify that the translated block is still within the bounds and all the blocks in the grid are empty (None)"""
-        for i in range(len(self.coordinates)):
-            if( self.new_coordinates[i].y >= 0 and 
-                ( not(0 <= self.new_coordinates[i].x < grid.width) 
-                    or not(0 <= self.new_coordinates[i].y < grid.height)
-                    or not(grid.blocks[self.new_coordinates[i].y][self.new_coordinates[i].x] == None)
-                )):
-                return False
+
+        if validate:
+            for i in range(len(self.coordinates)):
+                if( self.new_coordinates[i].y >= 0 and 
+                    ( not(0 <= self.new_coordinates[i].x < grid.width) 
+                        or not(0 <= self.new_coordinates[i].y < grid.height)
+                        or not(grid.blocks[self.new_coordinates[i].y][self.new_coordinates[i].x] == None)
+                    )):
+                    return False
 
         """Commit this move by moving the values from new_coordinates to the coordinates"""
         for i in range(len(self.coordinates)):
