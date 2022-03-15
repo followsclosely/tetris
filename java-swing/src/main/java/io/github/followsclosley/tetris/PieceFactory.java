@@ -33,7 +33,7 @@ public class PieceFactory {
     }
 
     private Piece getRandomPiece() {
-        return getPiece(random.nextInt(7) + 1);
+        return getPiece(random.nextInt(8) + 1);
     }
 
     private Piece getPiece(int index) {
@@ -58,7 +58,7 @@ public class PieceFactory {
             case 6 -> new Piece(index, new Coordinate(2, 0), new Coordinate(3, 0), new Coordinate(1, 1), new Coordinate(2, 1));
             // XXXX
             // ----
-            default -> new Piece(index, new Coordinate(1, 0), new Coordinate(0, 0), new Coordinate(2, 0), new Coordinate(3, 0));
+            default -> new Piece(7, new Coordinate(1, 0), new Coordinate(0, 0), new Coordinate(2, 0), new Coordinate(3, 0));
         };
     }
 }

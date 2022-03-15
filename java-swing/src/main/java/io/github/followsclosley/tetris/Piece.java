@@ -5,6 +5,7 @@ import lombok.Getter;
 import java.util.Arrays;
 
 public class Piece {
+    @Getter private int moveCounter = 0;
     @Getter private final int index;
     private final boolean rotates;
     @Getter private Coordinate[] coordinates;
@@ -17,6 +18,10 @@ public class Piece {
         this.index = index;
         this.rotates = rotates;
         this.coordinates = coordinates;
+    }
+
+    public Piece clone(){
+        return new Piece(index, coordinates.clone());
     }
 
     public boolean translate(int dx, int dy, Grid grid) {
@@ -52,6 +57,9 @@ public class Piece {
                         || grid.getBlock(c) != 0);
 
         if (isGood) {
+            synchronized (this) {
+                moveCounter++;
+            }
             this.coordinates = translatedCoordinates;
         }
 

@@ -12,27 +12,31 @@ public class TetrisPanel extends JPanel {
 
     private final TetrisEngine engine;
     private final Color[] COLORS = {new Color(100, 100, 100), new Color(150, 0, 0), new Color(0, 150, 0), new Color(0, 0, 150), new Color(150, 0, 0), new Color(50, 0, 90), new Color(50, 110, 50), new Color(150, 0, 140)};
-    private final int PIECE_SIZE = 15;
+    private int pieceSize;
     protected Dimension defaultDimension;
 
     public TetrisPanel(TetrisEngine engine) {
         this.engine = engine;
-        this.defaultDimension = new Dimension(engine.getGrid().getWidth() * PIECE_SIZE + 1, engine.getGrid().getHeight() * PIECE_SIZE + 1);
+        this.init(30);
         setBackground(Color.BLACK);
+    }
+    public void init(int pieceSize){
+        this.pieceSize = pieceSize;
+        this.defaultDimension = new Dimension(engine.getGrid().getWidth() * pieceSize + 1, engine.getGrid().getHeight() * pieceSize + 1);
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    public synchronized void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         Grid grid = engine.getGrid();
 
         g.setColor(new Color(40,30,20));
         for (int x = 0, width = engine.getGrid().getWidth(); x <= width; x++) {
-            g.drawLine(x * PIECE_SIZE, 0, x * PIECE_SIZE, grid.getHeight() * PIECE_SIZE);
+            g.drawLine(x * pieceSize, 0, x * pieceSize, grid.getHeight() * pieceSize);
         }
         for (int y = 0, height = engine.getGrid().getHeight(); y <= height; y++) {
-            g.drawLine(0, y * PIECE_SIZE, grid.getWidth() * PIECE_SIZE, y * PIECE_SIZE);
+            g.drawLine(0, y * pieceSize, grid.getWidth() * pieceSize, y * pieceSize);
         }
 
         //Paint the blocks on the grid
@@ -41,19 +45,29 @@ public class TetrisPanel extends JPanel {
                 int block = grid.getBlock(x, y);
                 if (block > 0) {
                     g.setColor(COLORS[block]);
-                    g.fill3DRect(x * PIECE_SIZE, y * PIECE_SIZE, PIECE_SIZE, PIECE_SIZE, true);
+                    g.fill3DRect(x * pieceSize, y * pieceSize, pieceSize, pieceSize, true);
                 }
             }
         }
+        Piece current = engine.getCurrent();
 
         //Paint the current piece
-        Piece current = engine.getCurrent();
         if (current != null) {
+            Piece shadow = current.clone();
+            while (shadow.translate(0,+1, grid));
+            for (Coordinate c : shadow.getCoordinates()) {
+                g.setColor(COLORS[shadow.getIndex()]);
+                g.drawRect(c.getX() * pieceSize, c.getY() * pieceSize, pieceSize, pieceSize);
+            }
+
             for (Coordinate c : current.getCoordinates()) {
                 g.setColor(COLORS[current.getIndex()]);
-                g.fill3DRect(c.getX() * PIECE_SIZE, c.getY() * PIECE_SIZE, PIECE_SIZE, PIECE_SIZE, true);
+                g.fill3DRect(c.getX() * pieceSize, c.getY() * pieceSize, pieceSize, pieceSize, true);
             }
         }
+
+
+
     }
 
     @Override public Dimension getPreferredSize() {

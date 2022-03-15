@@ -20,6 +20,8 @@ public class TetrisLauncher {
 
     public static void show(TetrisEngine engine) {
         TetrisPanel tetrisPanel = new TetrisPanel(engine);
+        tetrisPanel.init(25);
+
         engine.setComponent(tetrisPanel::repaint);
 
         JFrame frame = new JFrame("Tetris");
