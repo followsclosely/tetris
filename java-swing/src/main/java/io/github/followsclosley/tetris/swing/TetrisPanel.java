@@ -12,7 +12,7 @@ public class TetrisPanel extends JPanel {
 
     private final TetrisEngine engine;
     private final Color[] COLORS = {new Color(100, 100, 100), new Color(150, 0, 0), new Color(0, 150, 0), new Color(0, 0, 150), new Color(150, 0, 0), new Color(50, 0, 90), new Color(50, 110, 50), new Color(150, 0, 140)};
-    private final int PIECE_SIZE = 30;
+    private final int PIECE_SIZE = 15;
     protected Dimension defaultDimension;
 
     public TetrisPanel(TetrisEngine engine) {
@@ -27,12 +27,12 @@ public class TetrisPanel extends JPanel {
 
         Grid grid = engine.getGrid();
 
-        g.setColor(Color.GRAY);
+        g.setColor(new Color(40,30,20));
         for (int x = 0, width = engine.getGrid().getWidth(); x <= width; x++) {
-            g.drawLine(x * PIECE_SIZE, 0, x * PIECE_SIZE, 20 * PIECE_SIZE);
+            g.drawLine(x * PIECE_SIZE, 0, x * PIECE_SIZE, grid.getHeight() * PIECE_SIZE);
         }
         for (int y = 0, height = engine.getGrid().getHeight(); y <= height; y++) {
-            g.drawLine(0, y * PIECE_SIZE, 10 * PIECE_SIZE, y * PIECE_SIZE);
+            g.drawLine(0, y * PIECE_SIZE, grid.getWidth() * PIECE_SIZE, y * PIECE_SIZE);
         }
 
         //Paint the blocks on the grid
@@ -56,8 +56,7 @@ public class TetrisPanel extends JPanel {
         }
     }
 
-    @Override
-    public Dimension getPreferredSize() {
+    @Override public Dimension getPreferredSize() {
         return defaultDimension;
     }
 }

@@ -19,7 +19,7 @@ public class TetrisEngine implements Runnable {
     @Override
     public void run() {
         current = factory.get();
-        current.translate(3, 3, grid);
+        current.translate(3, 1, grid);
         while (running) {
             try {
                 Thread.sleep(500);
@@ -27,14 +27,16 @@ public class TetrisEngine implements Runnable {
             }
 
             if (current.translate(0, 1, grid)) {
-                component.run();
+
             } else {
                 grid.addPiece(current);
                 grid.clearFinishedRows();
 
                 current = factory.get();
-                current.translate(3, 3, grid);
+                current.translate(3, 1, grid);
             }
+
+            component.run();
 
         }
     }

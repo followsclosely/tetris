@@ -35,9 +35,7 @@ public class Grid {
 
         for (int y = height - 1; y >= 0; y--) {
             if (counts[y] > 0) {
-                for (int x = 0; x < width; x++) {
-                    blocks[y + counts[y]][x] = blocks[y][x];
-                }
+                System.arraycopy(blocks[y], 0, blocks[y + counts[y]], 0, width);
             }
         }
 
