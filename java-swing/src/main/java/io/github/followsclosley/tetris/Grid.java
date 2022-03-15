@@ -5,9 +5,9 @@ import lombok.Getter;
 import java.util.Arrays;
 
 public class Grid {
-    int[][] blocks;
-    @Getter private int width = 10;
-    @Getter private int height = 20;
+    private final int[][] blocks;
+    @Getter private final int width;
+    @Getter private final int height;
 
     public Grid(int width, int height) {
         this.width = width;
