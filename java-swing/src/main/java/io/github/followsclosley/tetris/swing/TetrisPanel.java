@@ -7,6 +7,7 @@ import io.github.followsclosley.tetris.TetrisEngine;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class TetrisPanel extends JPanel {
 
@@ -53,15 +54,16 @@ public class TetrisPanel extends JPanel {
 
         //Paint the current piece
         if (current != null) {
+            g.setColor(COLORS[current.getIndex()]);
+
+            //Clone the block and drop it down to create a shadow.
             Piece shadow = current.clone();
             while (shadow.translate(0,+1, grid));
             for (Coordinate c : shadow.getCoordinates()) {
-                g.setColor(COLORS[shadow.getIndex()]);
                 g.drawRect(c.getX() * pieceSize, c.getY() * pieceSize, pieceSize, pieceSize);
             }
 
             for (Coordinate c : current.getCoordinates()) {
-                g.setColor(COLORS[current.getIndex()]);
                 g.fill3DRect(c.getX() * pieceSize, c.getY() * pieceSize, pieceSize, pieceSize, true);
             }
         }
