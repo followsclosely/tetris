@@ -13,7 +13,6 @@ import java.util.Map;
 public class TetrisLauncher {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
         TetrisEngine engine = new TetrisEngine(new Grid(10, 20), new PieceFactory(5));
         TetrisLauncher.show(engine);
     }

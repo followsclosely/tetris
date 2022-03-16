@@ -10,7 +10,7 @@ public class PieceFactory {
 
     private final Queue<Piece> queue = new LinkedList<>();
     private final Random random = new Random();
-    @Getter private int queueSize = 5;
+    @Getter private final int queueSize;
     @Getter private Piece hold;
 
     public PieceFactory(int queueSize) {
