@@ -30,6 +30,7 @@ public class TetrisLauncher {
         frame.setVisible(true);
 
         Map<Integer, KeyPressedAction> keys = new HashMap<>();
+        keys.put(KeyEvent.VK_H, e -> engine.swapHold());
         keys.put(KeyEvent.VK_RIGHT, (e) -> engine.getCurrent().translate(+1, 0, engine.getGrid()));
         keys.put(KeyEvent.VK_LEFT, (e) -> engine.getCurrent().translate(-1, 0, engine.getGrid()));
         keys.put(KeyEvent.VK_UP, (e) -> engine.getCurrent().rotate(-1, engine.getGrid()));

@@ -6,7 +6,7 @@ import lombok.Setter;
 public class TetrisEngine implements Runnable {
 
     @Getter private final Grid grid;
-    private final PieceFactory factory;
+    @Getter private final PieceFactory factory;
     private final boolean running = true;
     @Getter @Setter private Runnable component;
     @Getter private Piece current;
@@ -14,6 +14,11 @@ public class TetrisEngine implements Runnable {
     public TetrisEngine(Grid grid, PieceFactory factory) {
         this.grid = grid;
         this.factory = factory;
+    }
+
+    public boolean swapHold() {
+        current = factory.swapHold(current);
+        return true;
     }
 
     @Override
